@@ -8,7 +8,7 @@ use App\Repository\ProductRepository;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product
+class Product implements \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
@@ -99,5 +99,15 @@ class Product
         $this->qty_total = $qty_total;
 
         return $this;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'price' => $this->getPrice(),
+        ];
     }
 }
